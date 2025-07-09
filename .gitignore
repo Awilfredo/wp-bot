@@ -1,0 +1,5 @@
+.wwebjs_auth/
+.env
+*.log
+node_modules
+yarn.lock
