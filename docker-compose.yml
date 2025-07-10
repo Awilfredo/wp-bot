@@ -1,7 +1,28 @@
 version: '3.8'
+
 services:
+  # Servicio para n8n
+  n8n:
+    image: docker.n8n.io/n8nio/n8n
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=wilfredo
+      - N8N_BASIC_AUTH_PASSWORD=Galadriel94*
+      - GENERIC_TIMEZONE=America/El_Salvador
+      - N8N_RUNNERS_ENABLED=true
+      - N8N_SECURE_COOKIE=false
+    volumes:
+      - ./data:/home/node/.n8n
+    networks:
+      - wpnet
+
+  # Servicio para tu aplicación Node.js
   app:
     build: .
+    restart: unless-stopped
     ports:
       - "3000:3000"
     volumes:
@@ -11,7 +32,8 @@ services:
       - NODE_ENV=development
     networks:
       - wpnet
-      
+
+# Definición de la red compartida
 networks:
   wpnet:
     driver: bridge
